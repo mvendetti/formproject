@@ -7,7 +7,7 @@ Vue.component('form-app', {
             <div class="row">
                 <div class="col-md-3 col-md-offset-3">
                     <h1>files discovered</h1>
-                    <select v-model="selected" class="form-control" multiple>
+                    <select v-model="selected" class="form-control" size="5">
                         <option v-for="file in files">
                             {{ file }}
                         </option>
