@@ -53,33 +53,26 @@ Vue.component('form-app', {
                 'file_name' : this.selected.toString()
             };
 
-            axios.post('/api/form', data)
-                .then(function(response) {
-                    console.log(response);
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            axios.get('/api/form').then((response) => {
+                console.log(response);
+            }, (error) => {
+                console.log(error);
+            });
         },
         getFiles : function() {
-            var me = this;
-            axios.get('/api/file')
-                .then(function(response) {
-                    me.files = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            axios.get('/api/file').then((response) => {
+                var f = response.data;
+                this.wasFilePreviouslySubmittedChecker(f);
+            }, (error) => {
+                console.log(error);
+            });
         },
         getFormData : function() {
-            var me = this;
-            axios.get('/api/form')
-                .then(function(response) {
-                    me.formData = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            axios.get('/api/form').then((response) => {
+                this.formData = response.data;
+            }, (error) => {
+                console.log(error);
+            });
         },
         formSortToFileName : function() {
             var formArray = this.formData,
@@ -89,7 +82,7 @@ Vue.component('form-app', {
             }
             return filtered;
         },
-        wasFilePreviouslySubmittedChecker : function() {
+        wasFilePreviouslySubmittedChecker : function(f) {
             //
         }
     },
