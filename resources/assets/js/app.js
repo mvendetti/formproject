@@ -7,13 +7,14 @@ Vue.component('form-app', {
             <div class="row">
                 <div class="col-md-3 col-md-offset-3">
                     <h1>files discovered</h1>
-                    <select v-model="selected" class="form-control" size="5">
-                        <option v-for="file in files">
-                            {{ file }}
-                        </option>
-                        <!-- <option v-if="files.length == 0">no videos in directory</option> -->
-                    </select>
-
+                    <div class="form-group">
+                        <select v-model="selected" class="form-control" size="5">
+                            <option v-for="file in files">
+                                {{ file }}
+                            </option>
+                            <!-- <option v-if="files.length == 0">no videos in directory</option> -->
+                        </select>
+                    </div>
                     <hr/>
 
                     <form>
@@ -28,7 +29,6 @@ Vue.component('form-app', {
                                 <label>description:</label>
                                 <input v-model="description" class="form-control" type="text" required>
                             </div>
-
                             <button type="submit" @click.prevent="onSubmit" class="btn btn-lg btn-default pull-right">Submit</button>
                         </fieldset>
                     </form>
@@ -39,8 +39,7 @@ Vue.component('form-app', {
     data() {
         return {
             files: [],
-            formData: [],
-            selected: [],
+            selected: '',
             ownerName: '',
             description: ''
         }
@@ -53,41 +52,21 @@ Vue.component('form-app', {
                 'file_name' : this.selected.toString()
             };
 
-            axios.get('/api/form').then((response) => {
+            axios.post('/api/form', data).then((response) => {
                 console.log(response);
             }, (error) => {
-                console.log(error);
+                console.log(error.response.data);
             });
         },
         getFiles : function() {
             axios.get('/api/file').then((response) => {
-                var f = response.data;
-                this.wasFilePreviouslySubmittedChecker(f);
+                this.files = response.data;
             }, (error) => {
-                console.log(error);
+                console.log(error.response.data);
             });
-        },
-        getFormData : function() {
-            axios.get('/api/form').then((response) => {
-                this.formData = response.data;
-            }, (error) => {
-                console.log(error);
-            });
-        },
-        formSortToFileName : function() {
-            var formArray = this.formData,
-                filtered;
-            for(var i = 0; i < formArray.length; i++) {
-                filtered = formArray[i].file_name;
-            }
-            return filtered;
-        },
-        wasFilePreviouslySubmittedChecker : function(f) {
-            //
         }
     },
     created() {
-        this.getFormData();
         this.getFiles();
     }
 })
