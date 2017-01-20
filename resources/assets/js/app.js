@@ -6,18 +6,18 @@ Vue.component('form-app', {
         <div>
             <div class="row">
                 <div class="col-md-3 col-md-offset-3">
-                    <h1>files discovered</h1>
-                    <div class="form-group">
-                        <select v-model="selected" class="form-control" size="5">
-                            <option v-for="file in files">
-                                {{ file }}
-                            </option>
-                            <!-- <option v-if="files.length == 0">no videos in directory</option> -->
-                        </select>
-                    </div>
-                    <hr/>
 
-                    <form>
+                    <form @submit.prevent="onSubmit">
+                        <h1>files discovered</h1>
+                        <div class="form-group">
+                            <select v-model="selected" class="form-control" size="5" required>
+                                <option v-for="file in files">
+                                    {{ file }}
+                                </option>
+                                <!-- <option v-if="files.length == 0">no videos in directory</option> -->
+                            </select>
+                        </div>
+                        <hr/>
                         <fieldset>
                             <h1>file information</h1>
                             <span>video selected: {{ selected }}</span>
@@ -29,7 +29,7 @@ Vue.component('form-app', {
                                 <label>description:</label>
                                 <input v-model="description" class="form-control" type="text" required>
                             </div>
-                            <button type="submit" @click.prevent="onSubmit" class="btn btn-lg btn-default pull-right">Submit</button>
+                            <button type="submit" class="btn btn-lg btn-default pull-right">Submit</button>
                         </fieldset>
                     </form>
                 </div>
