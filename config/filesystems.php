@@ -54,6 +54,11 @@ return [
             'visibility' => 'public',
         ],
 
+        'videos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/videos')
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => 'your-key',
