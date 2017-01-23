@@ -9,28 +9,29 @@ Vue.component('form-app', {
 
                     <form @submit.prevent="onSubmit">
                         <h1>files discovered</h1>
-                        <div class="form-group">
+                        <div :class="['form-group', errorFile ? 'has-error' : '']">
                             <select v-model="selected" class="form-control" size="5" required>
                                 <option v-for="file in files">
                                     {{ file }}
                                 </option>
                                 <!-- <option v-if="files.length == 0">no videos in directory</option> -->
                             </select>
+                            <p v-for="error in errors.file_name" class="error-message">{{ error }}</p>
                         </div>
-                        <hr/>
-                        <fieldset>
-                            <h1>file information</h1>
-                            <span>video selected: {{ selected }}</span>
-                            <div class="form-group">
-                                <label>owner name:</label>
-                                <input v-model="ownerName" class="form-control" type="text" required>
-                            </div>
-                            <div class="form-group">
-                                <label>description:</label>
-                                <input v-model="description" class="form-control" type="text" required>
-                            </div>
-                            <button type="submit" class="btn btn-lg btn-default pull-right">Submit</button>
-                        </fieldset>
+
+                        <h1>file information</h1>
+                        <span>video selected: {{ selected }}</span>
+                        <div :class="['form-group', errorOwner ? 'has-error' : '']">
+                            <label>owner name:</label>
+                            <input v-model="ownerName" class="form-control" type="text" required>
+                            <p v-for="error in errors.owner_name" class="error-message">{{ error }}</p>
+                        </div>
+                        <div :class="['form-group', errorDescription ? 'has-error' : '']">
+                            <label>description:</label>
+                            <input v-model="description" class="form-control" type="text" required>
+                            <p v-for="error in errors.description" class="error-message">{{ error }}</p>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-default pull-right">Submit</button>
                     </form>
                 </div>
             </div>
@@ -41,7 +42,19 @@ Vue.component('form-app', {
             files: [],
             selected: '',
             ownerName: '',
-            description: ''
+            description: '',
+            errors: {}
+        }
+    },
+    computed: {
+        errorFile : function() {
+            return this.hasError('file_name');
+        },
+        errorOwner : function() {
+            return this.hasError('owner_name');
+        },
+        errorDescription : function() {
+            return this.hasError('description');
         }
     },
     methods: {
@@ -55,7 +68,8 @@ Vue.component('form-app', {
             axios.post('/api/form', data).then((response) => {
                 console.log(response);
             }, (error) => {
-                console.log(error.response.data);
+                this.errors = error.response.data;
+                // console.log(error.response.data);
             });
         },
         getFiles : function() {
@@ -64,6 +78,13 @@ Vue.component('form-app', {
             }, (error) => {
                 console.log(error.response.data);
             });
+        },
+        hasError : function(field) {
+            if(typeof this.errors[field] != 'undefined' && this.errors[field].length > 0)
+            {
+                return true;
+            }
+            return false;
         }
     },
     created() {

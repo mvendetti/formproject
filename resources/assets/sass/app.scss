@@ -11,3 +11,10 @@
 body {
     font-family: 'Open Sans', Helvetica, sans-serif;
 }
+
+p {
+    &.error-message {
+        color: #a94442;
+        margin: 5px 0;
+    }
+}
