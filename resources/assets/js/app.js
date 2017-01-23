@@ -7,14 +7,14 @@ Vue.component('form-app', {
             <div class="row">
                 <div class="col-md-3 col-md-offset-3">
 
-                    <form @submit.prevent="onSubmit">
+                    <form @submit="onSubmit">
                         <h1>files discovered</h1>
                         <div :class="['form-group', errorFile ? 'has-error' : '']">
                             <select v-model="selected" class="form-control" size="5" required>
                                 <option v-for="file in files">
                                     {{ file }}
                                 </option>
-                                <!-- <option v-if="files.length == 0">no videos in directory</option> -->
+                                <option v-if="files.length == 0" disabled>no new videos</option>
                             </select>
                             <p v-for="error in errors.file_name" class="error-message">{{ error }}</p>
                         </div>
@@ -69,7 +69,6 @@ Vue.component('form-app', {
                 console.log(response);
             }, (error) => {
                 this.errors = error.response.data;
-                // console.log(error.response.data);
             });
         },
         getFiles : function() {
