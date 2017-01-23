@@ -13,19 +13,19 @@ class FileGetter
 
     public function getFiles() {
         $files = Storage::disk('videos')->files();
-
         foreach($files as $index => $file)
         {
-            if(!$this->_validExtension($file))
+            if(!$this->_validExtension($file) || $this->_filterFiles($file))
             {
                 unset($files[$index]);
             }
-
-            if(Form::where('file_name', '=', $file)->exists()) {
-                //
-            }
         }
         return $files;
+    }
+
+    protected function _filterFiles($file)
+    {
+        return Form::where('file_name', $file)->exists();
     }
 
     protected function _validExtension($file)
