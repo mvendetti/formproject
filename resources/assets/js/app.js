@@ -7,7 +7,7 @@ Vue.component('form-app', {
             <div class="row">
                 <div class="col-md-3 col-md-offset-3">
 
-                    <form @submit="onSubmit">
+                    <form @submit.prevent="onSubmit">
                         <h1>files discovered</h1>
                         <div :class="['form-group', errorFile ? 'has-error' : '']">
                             <select v-model="selected" class="form-control" size="5" required>
@@ -28,7 +28,7 @@ Vue.component('form-app', {
                         </div>
                         <div :class="['form-group', errorDescription ? 'has-error' : '']">
                             <label>description:</label>
-                            <input v-model="description" class="form-control" type="text" required>
+                            <textarea v-model="description" class="form-control" rows="7" required></textarea>
                             <p v-for="error in errors.description" class="error-message">{{ error }}</p>
                         </div>
                         <button type="submit" class="btn btn-lg btn-default pull-right">Submit</button>
@@ -40,10 +40,10 @@ Vue.component('form-app', {
     data() {
         return {
             files: [],
+            errors: {},
             selected: '',
             ownerName: '',
             description: '',
-            errors: {}
         }
     },
     computed: {
@@ -66,7 +66,8 @@ Vue.component('form-app', {
             };
 
             axios.post('/api/form', data).then((response) => {
-                console.log(response);
+                this.getFiles();
+                this.description = '';
             }, (error) => {
                 this.errors = error.response.data;
             });
