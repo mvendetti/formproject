@@ -30,6 +30,6 @@ class FileGetter
 
     protected function _validExtension($file)
     {
-        return in_array(pathinfo($file)['extension'], $this->extensions);
+        return in_array(strtolower(pathinfo($file)['extension']), $this->extensions);
     }
 }
