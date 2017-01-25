@@ -6,7 +6,6 @@ Vue.component('form-app', {
         <div>
             <div class="row">
                 <div class="col-md-3 col-md-offset-3">
-
                     <form @submit.prevent="onSubmit">
                         <h1>files discovered</h1>
                         <div :class="['form-group', errorFile ? 'has-error' : '']">
@@ -20,7 +19,6 @@ Vue.component('form-app', {
                         </div>
 
                         <h1>file information</h1>
-                        <span>video selected: {{ selected }}</span>
                         <div :class="['form-group', errorOwner ? 'has-error' : '']">
                             <label>owner name:</label>
                             <input v-model="ownerName" class="form-control" type="text" required>
@@ -34,6 +32,22 @@ Vue.component('form-app', {
                         <button type="submit" class="btn btn-lg btn-default pull-right">Submit</button>
                     </form>
                 </div>
+
+                <div class="col-md-3">
+                    <h1>files submitted</h1>
+                    <form>
+                        <div class="form-group">
+                            <select v-model="submittedSelectedId" class="form-control" size="7" required>
+                                <option v-for="file in submittedFiles" :value="file.id">
+                                    {{ file.file_name }}
+                                </option>
+                                <option v-if="submittedFiles.length == 0" disabled>no videos submitted</option>
+                            </select>
+                        </div>
+                        <a :href="'/' + this.submittedSelectedId + '/edit'" class="btn btn-lg btn-primary">Edit</a>
+                        <button @click.prevent="deleteFileEntry" class="btn btn-lg btn-danger">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
     `,
@@ -44,6 +58,8 @@ Vue.component('form-app', {
             selected: '',
             ownerName: '',
             description: '',
+            submittedFiles: [],
+            submittedSelectedId: ''
         }
     },
     computed: {
@@ -66,10 +82,18 @@ Vue.component('form-app', {
             };
 
             axios.post('/api/form', data).then((response) => {
-                this.getFiles();
+                this.refresh();
                 this.description = '';
             }, (error) => {
                 this.errors = error.response.data;
+            });
+        },
+        deleteFileEntry : function() {
+            var id = this.submittedSelectedId;
+            axios.delete('/api/form/' + id).then((response) => {
+                this.refresh();
+            }, (error) => {
+                console.log(error.response.data);
             });
         },
         getFiles : function() {
@@ -78,6 +102,17 @@ Vue.component('form-app', {
             }, (error) => {
                 console.log(error.response.data);
             });
+        },
+        getSubmittedFiles : function() {
+            axios.get('/api/form').then((response) => {
+                this.submittedFiles = response.data;
+            }, (error) => {
+                console.log(error.response.data);
+            });
+        },
+        refresh : function() {
+            this.getFiles();
+            this.getSubmittedFiles();
         },
         hasError : function(field) {
             if(typeof this.errors[field] != 'undefined' && this.errors[field].length > 0)
@@ -88,7 +123,7 @@ Vue.component('form-app', {
         }
     },
     created() {
-        this.getFiles();
+        this.refresh();
     }
 })
 
