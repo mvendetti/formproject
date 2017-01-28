@@ -5,7 +5,7 @@
                 <h1>edit file information</h1>
                 <form @submit.prevent="submitUpdate">
                     <div :class="['form-group', errorOwner ? 'has-error' : '']">
-                        <label>file name: </label><br />
+                        <label>file name: {{ this.fileName }}</label><br />
                         <label>owner name:</label>
                         <input v-model="ownerName" class="form-control" type="text" required>
                         <p v-for="error in errors.owner_name" class="error-message">{{ error }}</p>
@@ -29,7 +29,6 @@
         data() {
             return {
                 id: 0,
-                files: [],
                 errors: {},
                 fileName: '',
                 ownerName: '',
@@ -48,12 +47,12 @@
             submitUpdate : function() {
                 var data = {
                     'owner_name' : this.ownerName,
-                    'description' : this.description,
-                    'file_name' : this.fileName
-                };
+                    'description' : this.description
+                },
+                    id = this.id;
 
-                axios.post('/api/form', data).then((response) => {
-                    // post info
+                axios.patch('/api/form/' + id, data).then((response) => {
+                    console.log(response);
                 }, (error) => {
                     this.errors = error.response.data;
                 });
@@ -61,7 +60,9 @@
             getFileInfo : function() {
                 var id = this.id;
                 axios.get('/api/form/' + id).then((response) => {
-                    //
+                    this.fileName = response.data.file_name;
+                    this.ownerName = response.data.owner_name;
+                    this.description = response.data.description;
                 }, (error) => {
                     console.log(error.response.data);
                 });

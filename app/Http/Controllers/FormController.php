@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Form;
 use App\Http\Requests\FormPostRequest;
+use App\Http\Requests\FormUpdateRequest;
 
 class FormController extends Controller
 {
@@ -11,12 +12,16 @@ class FormController extends Controller
         return response()->json( Form::all() );
     }
 
+    public function show($id) {
+        return response()->json( Form::find($id) );
+    }
+
     public function store(FormPostRequest $request) {
         return response()->json( Form::create($request->all()) );
     }
 
-    public function edit(FormPostRequest $request, $id) {
-        // return response()->json( Form:: )
+    public function update(FormUpdateRequest $request, $id) {
+        // return response()->json( Form::find($id) );
     }
 
     public function destroy($id) {
