@@ -21,7 +21,9 @@ class FormController extends Controller
     }
 
     public function update(FormUpdateRequest $request, $id) {
-        // return response()->json( Form::find($id) );
+        return response()
+            ->json( Form::where('id', $id)
+            ->update($request->all()) );
     }
 
     public function destroy($id) {

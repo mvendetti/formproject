@@ -52,7 +52,7 @@
                     id = this.id;
 
                 axios.patch('/api/form/' + id, data).then((response) => {
-                    console.log(response);
+                    this.$router.push({ name: 'home' });
                 }, (error) => {
                     this.errors = error.response.data;
                 });

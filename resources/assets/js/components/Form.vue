@@ -60,7 +60,7 @@
                 ownerName: '',
                 description: '',
                 submittedFiles: [],
-                submittedSelectedId: ''
+                submittedSelectedId: 0
             }
         },
         computed: {
