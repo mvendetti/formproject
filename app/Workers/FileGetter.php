@@ -7,9 +7,10 @@ use App\Form;
 
 class FileGetter
 {
-    protected $extensions = [
-        'mp4', 'mov', 'mpeg',
-    ];
+    public function __construct()
+    {
+        $this->extensions = config('fileextensions.extensions.video');
+    }
 
     public function getFiles() {
         $files = Storage::disk('videos')->files();
