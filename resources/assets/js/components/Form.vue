@@ -49,8 +49,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         data() {
             return {
@@ -75,6 +73,13 @@
             }
         },
         methods: {
+            user : function() {
+                axios.get('/api/user').then((response) => {
+                    console.log(response.data);
+                }, (error) => {
+                    console.log(error.response.data);
+                });
+            },
             onSubmit : function() {
                 var data = {
                     'owner_name' : this.ownerName,
@@ -112,6 +117,7 @@
                 });
             },
             refresh : function() {
+                this.user();
                 this.getFiles();
                 this.getSubmittedFiles();
             },

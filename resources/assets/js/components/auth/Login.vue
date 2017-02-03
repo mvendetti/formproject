@@ -49,8 +49,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
-
     export default {
         data() {
             return {
@@ -74,7 +72,7 @@
                     'password' : this.password
                 };
                 axios.post('/api/login', data).then((response) => {
-                    console.log(response.data);
+                    this.$router.push({ name: 'form' });
                 }, (error) => {
                     this.errors = error.response.data;
                 });
