@@ -1,4 +1,5 @@
-import Vue from 'vue'
+require('./bootstrap');
+
 import router from './router'
 import components from './components'
 
