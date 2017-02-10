@@ -8,23 +8,26 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Form</title>
-    <link rel="stylesheet" href="../css/app.css">
+    <title></title>
+
+    <!-- Styles -->
+    <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
-        window.Laravel = <?php echo json_encode([
+        window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
             'user' => Auth::user()
-        ]); ?>
+        ]) !!};
     </script>
 </head>
 <body>
-    <div id="app">
+    <div id="spapp">
+        <form-app></form-app>
+
         @yield('content')
     </div>
-
     <!-- Scripts -->
-    <script src="../js/app.js"></script>
+    <script src="/js/app.js"></script>
 </body>
 </html>
