@@ -49,6 +49,7 @@
 </template>
 
 <script>
+    import {getHeader} from '../../config'
     export default {
         data() {
             return {
@@ -67,12 +68,26 @@
         },
         methods: {
             login : function() {
-                var data = {
-                    'email' : this.email,
-                    'password' : this.password
+                const data = {
+                    'grant_type' : 'password',
+                    'client_id' : 2,
+                    'client_secret' : 'qosAant73RQp0huB9FB2AUty4EArXG6uVq4AydQ6',
+                    'username' : this.email,
+                    'password' : this.password,
+                    'scope' : ''
                 };
-                axios.post('/api/login', data).then((response) => {
-                    this.$router.push({ name: 'form' });
+                const authUser = {};
+                axios.post('/oauth/token', data).then((response) => {
+                    // this.$router.push({ name: 'form' });
+                    console.log(response);
+                    if(response.status === 200) {
+                        authUser.access_token = response.data.access_token;
+                        authUser.refresh_token = response.data.refresh_token;
+                        window.localStorage.setItem('authUser', JSON.stringify(authUser))
+                        axios.get('/api/user', {headers: getHeader()}).then((response) => {
+                            console.log(response);
+                        });
+                    }
                 }, (error) => {
                     this.errors = error.response.data;
                 });
