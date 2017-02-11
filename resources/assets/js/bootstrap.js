@@ -17,6 +17,7 @@ require('bootstrap-sass');
  */
 
 window.Vue = require('vue');
+window.VueRouter = require('vue-router')
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -30,7 +31,7 @@ window.axios.defaults.headers.common = {
     'X-CSRF-TOKEN': window.Laravel.csrfToken,
     'X-Requested-With': 'XMLHttpRequest'
 };
-console.log(window.axios.defaults.headers.common);
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
