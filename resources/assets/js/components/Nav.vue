@@ -37,11 +37,11 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="/logout"
+                                    <router-link to="/logout"
                                         onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                         Logout
-                                    </a>
+                                    </router-link>
 
                                     <form id="logout-form" action="/logout" method="POST" style="display: none;">
                                         <!-- {{ csrf_field() }} -->
